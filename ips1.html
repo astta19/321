@@ -1,0 +1,689 @@
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Ativos de Rede</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgba(10,23,55,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        #app {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            font-size: 24px;
+            color: #343a40;
+        }
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .search-box input {
+            width: 80%;
+            max-width: 400px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .device-list {
+            list-style: none;
+            padding: 0;
+        }
+        .device-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin: 5px 0;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        .device-item:hover {
+            background-color: #d4edda;
+        }
+        .device-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .device-title {
+            font-weight: bold;
+            color: #495057;
+        }
+        .device-ip {
+            font-size: 14px;
+            color: #6c757d;
+        }
+        @media (max-width: 600px) {
+            .device-item {
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+        }
+        #menu ul { padding:0px;
+  margin:0px;
+  background-color:#EDEDED;
+  list-style:none;
+  
+}
+#menu ul li { display: inline; }
+#menu ul li a { 
+    padding: 2px 10px; 
+    display: inline-block; /* visual do link */ 
+    background-color:#020517; 
+    color: #cbd1d8; 
+    text-decoration: none; 
+    border-bottom:3px solid #0e34c9; 
+}
+h1 {
+      font-size: 100px; 
+     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+     color: #FFF; 
+     text-align: center;
+ }
+    </style>
+</head>
+
+<body>
+  
+    <div id="app">
+        <a href="index.html">HOME</a>
+      
+        <header>
+            <h1>Controle de Ativos de Rede</h1>
+        </header>
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Pesquisar dispositivos..." onkeyup="filterDevices()">
+        </div>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">CEOF</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vT5Qfm4vr02rrR0oX3wbgNc4QC2AE_Uq17tu6pcZxonejGFqi7H3e396OCazXql06OoJ-s7W7OZrOwf/pubhtml?gid=46643875&single=true" target="_blank">CEOF</a>.</p></span>
+                </div>
+            </li>
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Ambulatório</span>
+
+                    <select onchange="location.href=this.value">
+                        <option value="#">Selecione</option>
+                        <option value="http://192.168.4.69">DVR</option>
+                        <option value="http://192.168.4.54">Utilidade 9</option>
+                        <option value="http://192.168.4.53">Utilidade 8</option>
+                        <option value="http://192.168.4.52">Utilidade 9</option>
+                        <option value="http://192.168.4.61">Utilidade 8</option>
+                        <option value="http://192.168.4.58">Utilidade 10</option>
+                        <option value="http://192.168.4.59">Entrada Endosc...</option>
+                        <option value="http://192.168.4.60">Utilidade 11</option>
+                        <option value="http://192.168.4.55">Entrada HCC</option>
+                        <option value="http://192.168.4.51">Balcao 9</option>
+                        <option value="http://192.168.4.38">Intelbras VIP</option>
+                        <option value="http://192.168.4.42">Utilidade 1</option>
+                        <option value="http://192.168.4.27">Acesso ceaps</option>
+                        <option value="http://192.168.4.44">Utilidade 5</option>
+                        <option value="http://192.168.4.34">Ut2 Fundo</option>
+                        <option value="http://192.168.4.29">Utilidade 1</option>
+                        <option value="http://192.168.4.39">Externo corred...</option>
+                        <option value="http://192.168.4.33">Utilidade 3</option>
+                        <option value="http://192.168.4.48">Utilidade 6</option>
+                        <option value="http://192.168.4.45">Utilidade 7</option>
+                        <option value="http://192.168.4.41">Utilidade 7</option>
+                        <option value="http://192.168.4.46">Utilidade 6</option>
+                        <option value="http://192.168.4.40">Utilidade 7</option>
+                        <option value="http://192.168.4.49">Saida Ambulato...</option>
+                        <option value="http://192.168.4.25">Balcao 1</option>
+                        <option value="http://192.168.4.28">Clinica de dor...</option>
+                        <option value="http://192.168.4.36">Balcao 2</option>
+                        <option value="http://192.168.4.50">Balcao 7 senti...</option>
+                        <option value="http://192.168.4.37">Balcao 4</option>
+                        <option value="http://192.168.4.32">Utilidade 3</option>
+                        <option value="http://192.168.4.35">Intelbras VIP</option>
+                        <option value="http://192.168.4.120">Utilidade 10</option>
+                       </select>
+
+                    <span class="device-ip"></span>
+                </div>
+            </li>
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">1 Andar UETDI</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRXVOf8bUceW_xunlQnPlErnzMEdzrI6xn8BszwoPcClbmHu9fMavNijAlWKvZ1NmYWDFwwywp2AIVb/pubhtml?gid=103081339&single=true" target="_blank">1 Andar UETDI</a>.</p></span>
+                    <span class="device-ip">Local: 1 Andar UETDI</span>
+                </div>
+            </li>
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">3A Andar</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSQmKu3Co7pG09PiwjHk4fnOJU16RrTonVP3K5u-p7ROF4UmSna2EaN3gGFUsc4xdOS35YD-5-hheiI/pubhtml?gid=1198690803&single=true" target="_blank">3A Andar</a>.</p></span>
+                    <span class="device-ip">Local: 3 Andar </span>
+                </div>
+            </li>
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">3B Andar</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSQmKu3Co7pG09PiwjHk4fnOJU16RrTonVP3K5u-p7ROF4UmSna2EaN3gGFUsc4xdOS35YD-5-hheiI/pubhtml?gid=1198690803&single=true" target="_blank">3B Andar</a>.</p></span>
+                    <span class="device-ip">Local: 3 Andar </span>
+                </div>
+            </li>
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">7 Andar</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vR9ABnkoBm_MTzWAOj8rsYrhZkcvGTr-jfdprD2p9-vwGkTVnF_y9BiKxtRco2xsMasMsVi23j1YMVk/pubhtml?gid=1643707154&single=true" target="_blank">7 Andar</a>.</p></span>
+                    <span class="device-ip">Local: 7 Andar </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Balcão 11</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQRFuIllOFXQJsT-XFTrjfOGqiZzWe8ls8dPgYZC-o1RwYkq0ND99FGtTh7OlZI8aRfmGCldrqRFmjQ/pubhtml?gid=471602683&single=true" target="_blank">Balcão 11</a>.</p></span>
+                    <span class="device-ip">Local: 7 Andar </span>
+                </div>
+            </li>   
+           
+        </ul>
+        
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Bloco G 2</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1938147960&single=true" target="_blank">Bloco G 2</a>.</p></span>
+                    <span class="device-ip">Local: Bloco G 2 </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">CAF</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=663214187&single=true" target="_blank">CAF</a>.</p></span>
+                    <span class="device-ip">Local: CAF </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">CAF 1</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1415758203&single=true" target="_blank">CAF 1</a>.</p></span>
+                    <span class="device-ip">Local: CAF 1 </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">CAF 2</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=60798437&single=true" target="_blank">CAF 2</a>.</p></span>
+                    <span class="device-ip">Local: CAF 2 </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">CC</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1291530559&single=true" target="_blank">CC</a>.</p></span>
+                    <span class="device-ip">Local: CC </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">CCI</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1557504080&single=true" target="_blank">CCI</a>.</p></span>
+                    <span class="device-ip">Local: CCI </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Central de Quimio</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=992457678&single=true" target="_blank">Central de Quimio</a>.</p></span>
+                    <span class="device-ip">Local: Central de Quimio </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title"></span>
+                    
+                    <span class="device-ip">CISA 1<p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=524169008&single=true" target="_blank">CISA 1</a>.</p></span>
+                    <span class="device-ip">Local: CISA 1 </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">CISA 2</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=459296921&single=true" target="_blank">CISA 2</a>.</p></span>
+                    <span class="device-ip">Local: CISA 2 </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Coleta + Pneumo</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1935899144&single=true" target="_blank">Coleta +Pne</a>.</p></span>
+                    <span class="device-ip">Local: Coleta + Pneumo </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">CPD</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=2070324478&single=true" target="_blank">CPD</a>.</p></span>
+                    <span class="device-ip">Local: CPD </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Dialise</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=979072028&single=true" target="_blank">Dialise</a>.</p></span>
+                    <span class="device-ip">Local: Dialise </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Endoscopia</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=491839745&single=true" target="_blank">Endoscopia</a>.</p></span>
+                    <span class="device-ip">Local: Endoscopia </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">SS</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1061374262&single=true" target="_blank">SS</a>.</p></span>
+                    <span class="device-ip">Local: SS </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Engenharia</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1178366834&single=true" target="_blank">Engenharia</a>.</p></span>
+                    <span class="device-ip">Local: Engenharia </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">EStac 1</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1046818321&single=true" target="_blank">Estac 1</a>.</p></span>
+                    <span class="device-ip">Local: Estac 1 </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Estac 2</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=145197607&single=true" target="_blank">Estac 2</a>.</p></span>
+                    <span class="device-ip">Local: Estac 2 </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Estac Privativo</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=148561388&single=true" target="_blank">Estac Privativo</a>.</p></span>
+                    <span class="device-ip">Local: Estac Privativo </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Farmacia</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1024158185&single=true" target="_blank">Farmacia</a>.</p></span>
+                    <span class="device-ip">Local: Farmacia</span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Gecon</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1417871827&single=true" target="_blank">Gecon</a>.</p></span>
+                    <span class="device-ip">Local: Gecon </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Sala Kleber</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=2093206551&single=true" target="_blank">Sala Kleber</a>.</p></span>
+                    <span class="device-ip">Local: Sala </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Nutrição 1</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=584637403&single=true" target="_blank">Nutri 1</a>.</p></span>
+                    <span class="device-ip">Local: Nutrição 1 </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Nutrição 2</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=18399859&single=true" target="_blank">Nutri 2</a>.</p></span>
+                    <span class="device-ip">Local: Nutrição 2 </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Oftalmo</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1730641452&single=true" target="_blank">Oftalmo</a>.</p></span>
+                    <span class="device-ip">Local: Oftalmo </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Pav Mec</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1073343342&single=true" target="_blank">Pav Mec</a>.</p></span>
+                    <span class="device-ip">Local: Pav Mec </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Portaria Principal</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=982087501&single=true" target="_blank">PP</a>.</p></span>
+                    <span class="device-ip">Local: PP </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title"></span>
+                    
+                    <span class="device-ip">Residuo<p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vR9ABnkoBm_MTzWAOj8rsYrhZkcvGTr-jfdprD2p9-vwGkTVnF_y9BiKxtRco2xsMasMsVi23j1YMVk/pubhtml?gid=0&single=true" target="_blank">Residuo</a>.</p></span>
+                    <span class="device-ip">Local: Resíduos </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Samsp+Crie</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vR8mlbT1Nl98ldDreZS0uUgS9R9eIDEFX0Z88q-GTXatRmrZb7qbBy9XkLxaUw0rOUx0Hf0n6VLC4Io/pubhtml?gid=520758441&single=true" target="_blank">Samsp+Crie</a>.</p></span>
+                    <span class="device-ip">Local: Samsp+Crie </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">SAO</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vR8mlbT1Nl98ldDreZS0uUgS9R9eIDEFX0Z88q-GTXatRmrZb7qbBy9XkLxaUw0rOUx0Hf0n6VLC4Io/pubhtml?gid=1401774260&single=true" target="_blank">SAO</a>.</p></span>
+                    <span class="device-ip">Local: SAO</span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Samsp+Crie</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vR8mlbT1Nl98ldDreZS0uUgS9R9eIDEFX0Z88q-GTXatRmrZb7qbBy9XkLxaUw0rOUx0Hf0n6VLC4Io/pubhtml?gid=520758441&single=true" target="_blank">Samsp+Crie</a>.</p></span>
+                    <span class="device-ip">Local: Samsp+Crie </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">Transporte</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1332503741&single=true" target="_blank">Transporte</a>.</p></span>
+                    <span class="device-ip">Local: Transporte </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">UCO</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=191586304&single=true" target="_blank">UCO</a>.</p></span>
+                    <span class="device-ip">Local: UCO </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">UETDI + PRIV</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=507491996&single=true" target="_blank">UETDI + PRIV</a>.</p></span>
+                    <span class="device-ip">Local: UETDI + PRIV </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">UTR+CEAPS+TMO</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1834978175&single=true" target="_blank">UTR+CEAPS+TMO</a>.</p></span>
+                    <span class="device-ip">Local: UTR+CEAPS+TMO </span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">G4</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSyfDQnHbgeETUHcZWkltYD89QDqj5cs2cBI1DwPM5a-VXbwvFfF6WhV-GGMtQw7QGvp16uv3iGh4v0/pubhtml?gid=501141100&single=true" target="_blank">G4</a>.</p></span>
+                    <span class="device-ip">Local: SSP</span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">HCC 1</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQT0pdqysrBTYj-S3W4XEYApAHqn4bUTqACosiHX2v5ExrjOwid98kd6B3vYM03Xin_DJKJHHlRq8to/pubhtml?gid=608953467&single=true" target="_blank">HCC 1</a>.</p></span>
+                    <span class="device-ip">Local: CER</span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">HCC 2</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="" target="_blank">HCC 2</a>.</p></span>
+                    <span class="device-ip">Local: CER</span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">HCC 3</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ9T9kzTuh-dzZgqnERMIMjBBAK1-qtsjkqtioVm_jVqomaaojYl1xhDbf97o6At382yqhzLko_8ndE/pubhtml?gid=581182847&single=true" target="_blank">HCC 3</a>.</p></span>
+                    <span class="device-ip">Local: 5 Andar HC criança</span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">HCC 4</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSzodudf6hCgLwAFskYqmiSJ7Tkr4Zq3hyRJNjFG1uoO7zE-p_vrkU0nE-BLPrAsalP_7ArddrQMW6D/pubhtml?gid=699952881&single=true" target="_blank">HCC 4</a>.</p></span>
+                    <span class="device-ip">Local: 5 Andar HC Criança</span>
+                </div>
+            </li>   
+           
+        </ul>
+        <ul class="device-list" id="device-list">
+            <li class="device-item">
+                <div class="device-info">
+                    <span class="device-title">HCC Copas</span>
+                    
+                    <span class="device-ip"><p>Confira o <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTvy-zW3F0wU6rYdzcTnPji-2c0xKh9jWZS5A6iZwaBmPyMl5r8HpvGgPffZ4-eMa4DjqWK8ulMgSiA/pubhtml?gid=1876677099&single=true" target="_blank">HCC Copas</a>.</p></span>
+                    <span class="device-ip">Local: SSP</span>
+                </div>
+            </li>   
+           
+        </ul>
+    </div>
+
+    <script>
+        function filterDevices() {
+            const input = document.getElementById('search-input').value.toLowerCase();
+            const deviceItems = document.querySelectorAll('.device-item');
+
+            deviceItems.forEach(item => {
+                const title = item.querySelector('.device-title').textContent.toLowerCase();
+                const ip = item.querySelector('.device-ip').textContent.toLowerCase();
+
+                if (title.includes(input) || ip.includes(input)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,452 @@
+<html lang="pt-BR">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+<title>Pesquisa</title>
+<link rel="icon" 
+      type="image/jpg" 
+      href="Logo Hotelaria para adesivos (1).png" />
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tahoma', sans-serif;
+}
+
+body {
+    background:
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.window {
+    width: 800px;
+    background: #ECE9D8;
+    border: 1px solid #000000;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+}
+
+.title-bar {
+    height: 30px;
+    background: linear-gradient(180deg, #0058EE 0%, #3A93FF 8%, #288AFF 40%, #0065FD 88%, #0050D3 100%);
+    padding: 0 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px 8px 0 0;
+}
+
+.title-bar-text {
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.7);
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.title-bar-icon {
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border-radius: 2px;
+    margin-right: 5px;
+}
+
+.title-bar-controls {
+    display: flex;
+    gap: 2px;
+}
+
+.control-button {
+    width: 21px;
+    height: 21px;
+    border: 1px solid rgba(0,0,0,0.3);
+    background: linear-gradient(180deg, #FFF 0%, #ECE9D8 100%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Webdings";
+    color: #000;
+}
+
+.control-button:hover {
+    background: #FFE8A6;
+}
+
+.control-button.close {
+    font-family: "Tahoma";
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.control-button.close:hover {
+    background: #FF4444;
+    color: white;
+}
+
+.menu-bar {
+    background: #ECE9D8;
+    border-bottom: 1px solid #7A7A7A;
+    padding: 3px 8px;
+}
+
+.menu-item {
+    display: inline-block;
+    padding: 2px 5px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    background: #316AC5;
+    color: white;
+}
+
+.toolbar {
+    background: #ECE9D8;
+    padding: 8px;
+    border-bottom: 1px solid #7A7A7A;
+}
+
+.search-container {
+    display: flex;
+    gap: 5px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 3px 5px;
+    border: 1px solid #7A7A7A;
+    font-size: 12px;
+    background: white;
+}
+
+.search-button {
+    padding: 3px 10px;
+    background: linear-gradient(180deg, #F6F6F6 0%, #E3E3E3 50%, #D7D7D7 100%);
+    border: 1px solid #7A7A7A;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.search-button:hover {
+    background: linear-gradient(180deg, #FFE8A6 0%, #FFD977 50%, #FFC73C 100%);
+}
+
+.main-content {
+    background: white;
+    height: 350px;
+    padding: 10px;
+    overflow-y: auto;
+    border: 1px solid #7A7A7A;
+    margin: 5px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.data-table th {
+    background: linear-gradient(180deg, #F6F6F6 0%, #E3E3E3 100%);
+    padding: 5px;
+    text-align: left;
+    border: 1px solid #7A7A7A;
+}
+
+.data-table td {
+    padding: 4px 5px;
+    border: 1px solid #D3D3D3;
+}
+
+.data-table tr:nth-child(even) {
+    background: #F5F5F5;
+}
+
+.data-table tr:hover {
+    background: #FFE8A6;
+}
+
+.status-bar {
+    height: 22px;
+    background: #ECE9D8;
+    border-top: 1px solid #7A7A7A;
+    padding: 3px 8px;
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.loading {
+    display: none;
+    text-align: center;
+    padding: 20px;
+}
+
+.loading-spinner {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto 10px;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="none" stroke="%23316AC5" stroke-width="2" stroke-dasharray="70 30" stroke-linecap="round"><animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 16 16" to="360 16 16" dur="1s" repeatCount="indefinite"/></circle></svg>');
+}
+
+</style>
+</head>
+<body>
+    <div class="window">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <div class="title-bar-icon"></div>
+                Pesquisa de Dados
+            </div>
+            <div class="title-bar-controls">
+                <a href="index.html">
+                    <button class="control-button close">×</button>
+                </a>
+            </div>
+        </div>
+        
+        <div class="menu-bar">
+           
+        </div>
+        
+        <div class="toolbar">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Digite sua busca...">
+                <button class="search-button">Pesquisar</button>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Carregando dados...</p>
+            </div>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>IP</th>
+                        <th>Status</th>
+                        <th>Última Atualização</th>
+                        <th>Local</th>
+                        <th>URL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados serão inseridos aqui via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="status-bar">
+            <span class="status-text">0 itens</span>
+            <span class="status-info">Pronto</span>
+            
+        </div>
+        
+    </div>
+    
+
+<script>
+
+
+// Dados de exemplo
+const mockData = [
+    { id: 1, name: "CEOF", ip: "192.168.6.213", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP", url: "https://www.google.com" },
+    { id: 2, name: "Endoscopia", ip: "192.168.0.219", status: "Ativo", lastUpdate: "23/10/2024", local: "Endoscopia Sala Diretor" },
+    { id: 3, name: "Nutrição 2", ip: "192.168.10.35", status: "Ativo", lastUpdate: "23/10/2024", local: "Nutrição Sala Diretor" },
+    { id: 4, name: "UTR", ip: "192.168.3.84", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 5, name: "Transporte", ip: "192.168.2.2", status: "Ativo", lastUpdate: "23/10/2024", local: "Transporte" },
+    { id: 6, name: "Resíduos", ip: "192.168.8.35", status: "Ativo", lastUpdate: "23/10/2024", local: "Resíduos" },
+    { id: 7, name: "HCC Copas", ip: "192.168.15.239", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 8, name: "1 + LAB + GO", ip: "192.168.15.239", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 9, name: "Andares 5, 6 e 7", ip: "192.168.1.232", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 10, name: "HCC 2", ip: "192.168.15.211", status: "Ativo", lastUpdate: "23/10/2024", local: "CER" },
+    { id: 11, name: "CPD + NEURO", ip: "192.168.15.211", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP1" },
+    { id: 12, name: "Quimio", ip: "192.168.4.154", status: "Ativo", lastUpdate: "23/10/2024", local: "Balcão 11" },
+    { id: 13, name: "CEOF + Privativo", ip: "192.168.6.214", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 14, name: "Estacionamento 3", ip: "192.168.6.216", status: "Ativo", lastUpdate: "23/10/2024", local: "Estacionamento 3" },
+    { id: 15, name: "Andares 11 e 12", ip: "192.168.1.230", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 16, name: "Endoscopia", ip: "192.168.0.219", status: "Ativo", lastUpdate: "23/10/2024", local: "Endoscopia Sala Diretor" },
+    { id: 17, name: "CISA 1", ip: "192.168.1.35", status: "Ativo", lastUpdate: "23/10/2024", local: "Cisa" },
+    { id: 18, name: "Banco de Sangue", ip: "192.168.4.131", status: "Ativo", lastUpdate: "23/10/2024" },
+    { id: 19, name: "Engenharia", ip: "192.168.1.52", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 20, name: "Diversas", ip: "192.168.0.11", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 21, name: "Pavilhão Mecânico", ip: "192.168.15.152", status: "Ativo", lastUpdate: "23/10/2024", local: "" },
+    { id: 22, name: "UCO", ip: "192.168.0.161", status: "Ativo", lastUpdate: "23/10/2024", local: "UCO" },
+    { id: 23, name: "SubSolo", ip: "192.168.0.13", status: "Ativo", lastUpdate: "23/10/2024", local: "SS" },
+    { id: 24, name: "Estacionamento 2", ip: "192.168.8.40", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 25, name: "HCC 3", ip: "192.168.15.212", status: "Ativo", lastUpdate: "23/10/2024", local: "4 andar hcc" },
+    { id: 26, name: "Corredor + Utilidades + Registro", ip: "192.168.4.244", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 27, name: "PP", ip: "192.168.0.96", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 28, name: "Estacionamento (3)1", ip: "192.168.6.215", status: "Ativo", lastUpdate: "23/10/2024", local: "Estacionamento 3" },
+    { id: 29, name: "UETDI + Privativo", ip: "192.168.4.90", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 30, name: "Dialise", ip: "192.168.4.197", status: "Ativo", lastUpdate: "23/10/2024", local: "Dialise" },
+    { id: 31, name: "Oftalmo", ip: "192.168.4.70", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 32, name: "CISA 2", ip: "192.168.1.36", status: "Ativo", lastUpdate: "23/10/2024", local: "Cisa" },
+    { id: 33, name: "Bloco G 1", ip: "192.168.7.202", status: "Ativo", lastUpdate: "23/10/2024", local: "Bloco G" },
+    { id: 34, name: "Andares 8, 9 e 10", ip: "192.168.1.231", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 35, name: "Departamentos", ip: "192.168.2.87", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 36, name: "Bloco G 2", ip: "192.168.7.203", status: "Ativo", lastUpdate: "23/10/2024", local: "Bloco G" },
+    { id: 37, name: "HCC 4", ip: "192.168.15.213", status: "Ativo", lastUpdate: "23/10/2024", local: "4 andar hccs" },
+    { id: 38, name: "Gecon", ip: "192.168.0.199", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 39, name: "Samsp+CRIE", ip: "192.168.0.243", status: "Ativo", lastUpdate: "23/10/2024", local: "SSP" },
+    { id: 40, name: "HCC 1 + CER", ip: "192.168.15.210", status: "Ativo", lastUpdate: "23/10/2024", local: "CER" },
+    { id: 41, name: "Estacionamento 1", ip: "192.168.6.64", status: "Ativo", lastUpdate: "23/10/2024", local: "Sala do contrato" },
+    { id: 42, name: "Estacionamento Privativo", ip: "192.168.6.65", status: "Ativo", lastUpdate: "23/10/2024", local: "" },
+    { id: 43, name: "Nutrição 1", ip: "192.168.10.36", status: "Ativo", lastUpdate: "23/10/2024", local: "Nutrição Sala da Direção" },
+    { id: 44, name: "Andares 7 e 8", ip: "192.168.1.80", status: "Ativo", lastUpdate: "23/10/2024" },
+    { id: 45, name: "UETDI quartos", ip: "192.168.11.2", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 46, name: "3 Andar", ip: "192.168.5.141", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 47, name: "Sala Kleber", ip: "192.192.0.14", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 48, name: "CAF", ip: "192.168.2.97", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 49, name: "CAF 2", ip: "192.168.2.97", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 50, name: "Extra Andares", ip: "192.168.1.58", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 51, name: "CCI", ip: "10.165.160.32", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 52, name: "SEMI ATIVO", ip: "", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 53, name: "Radio", ip: "192.168.4.169", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 54, name: "HC Criança", ip: "192.168.15.65", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 55, name: "Utilidades", ip: "192.168.4.69", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 56, name: "Andares 3, 4 e 5", ip: "192.168.1.108", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 57, name: "Farmacia", ip: "192.168.0.109", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 58, name: "Adm", ip: "", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 59, name: "Centro Cirurgico", ip: "192.168.3.60", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 60, name: "Medicina Nuclear", ip: "192.168.3.106", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 61, name: "Rh Faepa", ip: "", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 62, name: "Portao Quintino UE", ip: "", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 63, name: "Estacionamento UE", ip: "", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 64, name: "Enfermaria UE", ip: "", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 65, name: "DVR Novo UE", ip: "", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 66, name: "SEA vidas UE", ip: "192.168.9.22", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 67, name: "Consultório UE", ip: "", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 68, name: "Central de Material", ip: "192.168.0.136", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 69, name: "4 CTI HCC", ip: "", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 70, name: "Andar 5", ip: "192.168.1.234", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 71, name: "Neuro", ip: "192.168.2.2", status: "Ativo", lastUpdate: "24/10/2024" },
+    { id: 74, name: "HCC 4 - Enfermagem", ip: "192.168.15.65", status: "Ativo", lastUpdate: "24/10/2024", local: "CER" },
+
+{ id: 76, name: "G4", ip: "192.168.8.61", status: "Ativo", lastUpdate: "28/10/2024", local: "SSP" },
+
+
+
+
+    
+];
+
+
+function showLoading() {
+    document.querySelector('.loading').style.display = 'block';
+    document.querySelector('.data-table').style.display = 'none';
+}
+
+function hideLoading() {
+    document.querySelector('.loading').style.display = 'none';
+    document.querySelector('.data-table').style.display = 'table';
+}
+
+function updateTable(data) {
+    const tbody = document.querySelector('.data-table tbody');
+    tbody.innerHTML = '';
+    
+    data.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${item.id}</td>
+            <td>${item.name}</td>
+            <td>${item.ip}</td>
+            <td>${item.status}</td>
+            <td>${item.lastUpdate}</td>
+            <td>${item.local}</td>
+            <td>${item.url}</td>
+
+        `;
+        tbody.appendChild(row);
+    });
+    
+    document.querySelector('.status-text').textContent = `${data.length} item(s)`;
+    
+}
+
+function searchData(query) {
+    showLoading();
+    
+    // Simulando uma busca com delay
+    setTimeout(() => {
+        const filteredData = mockData.filter(item => 
+            Object.values(item).some(value => 
+                String(value).toLowerCase().includes(query.toLowerCase())
+            )
+        );
+        
+        updateTable(filteredData);
+        hideLoading();
+        document.querySelector('.status-info').textContent = 'Pesquisa concluída';
+    }, 800);
+}
+
+
+
+// Event Listeners
+document.querySelector('.search-button').addEventListener('click', () => {
+    const query = document.querySelector('.search-input').value;
+    searchData(query);
+});
+
+document.querySelector('.search-input').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        const query = e.target.value;
+        searchData(query);
+    }
+});
+
+
+
+document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', () => {
+        alert('Menu ' + item.textContent + ' selecionado');
+    });
+});
+
+// Carregar dados iniciais
+updateTable(mockData);
+
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        // Remove active class from all tabs and contents
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        // Add active class to clicked tab and corresponding content
+        tab.classList.add('active');
+        const tabId = tab.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+        
+        // Load data for the active tab
+        if (mockData[tabId]) {
+            updateTable(tabId, mockData[tabId]);
+        }
+    });
+});
+
+
+
+
+
+
+
+</script>
+
+</body></html>

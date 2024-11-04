@@ -1,0 +1,135 @@
+<html><head><base href=""><style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f0f2f5;
+}
+
+.menu-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+    max-width: 800px;
+}
+
+.menu-item {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background: white;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+.menu-item svg {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+}
+
+.menu-item h3 {
+    color: #333;
+    font-size: 1.2em;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.menu-item p {
+    color: #666;
+    font-size: 0.9em;
+    text-align: center;
+    padding: 0 15px;
+    margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+    .menu-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-container {
+        grid-template-columns: 1fr;
+    }
+    .menu-item {
+        width: 100%;
+    }
+}
+</style></head><body>
+
+<div class="menu-container">
+    <div class="menu-item">
+        <img src="img/dvr.png" width="70px" height="70px">
+        <h3>DVR</h3>
+        
+    </div>
+    
+    <div class="menu-item">
+        <img src="img/endereco-de-ip.png" width="70px" height="70px">
+        <h3>Perfil</h3>
+        <p>Gerencie sua conta</p>
+    </div>
+    
+    <div class="menu-item">
+        <img src="img/gerenciamento-de-projetos.png" width="70px" height="70px">
+        <h3>Análises</h3>
+        <p>Visualize estatísticas</p>
+    </div>
+    
+    <div class="menu-item">
+        <img src="img/interruptor.png" width="70px" height="70px">
+        <h3>Mensagens</h3>
+        <p>Chat e suporte</p>
+    </div>
+    
+    <div class="menu-item">
+        <img src="img/dvr.png" width="70px" height="70px">
+        <h3>Configurações</h3>
+        <p>Personalize o sistema</p>
+    </div>
+    
+    <div class="menu-item">
+        <img src="img/dvr.png" width="70px" height="70px">
+        <h3>Relatórios</h3>
+        <p>Dados e métricas</p>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', function() {
+        // Adiciona efeito de clique
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            this.style.transform = 'scale(1)';
+        }, 150);
+        
+        // Aqui você pode adicionar a navegação ou ação desejada
+        console.log('Clicou em: ' + this.querySelector('h3').textContent);
+    });
+});
+</script>
+
+</body></html>

@@ -1,0 +1,14 @@
+<form id="meuFormulario">
+  <input type="text" id="nome" placeholder="Digite seu nome">
+  <input type="text" id="email" placeholder="Digite seu e-mail">
+  <button onclick="criarLinkDinamico()">Gerar Link</button>
+</form>
+
+<script>
+  function criarLinkDinamico() {
+    var nome = document.getElementById("nome").value;
+    var email = document.getElementById("email").value;
+    var url = "https://www.exemplo.com/contato?nome=" + nome + "&email=" + email;
+    window.location.href = url;
+  }
+</script>

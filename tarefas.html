@@ -1,0 +1,373 @@
+<html lang="pt-BR">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    
+    <head><base href="index.html" /><title>Sistema</title><style>
+body {
+    font-family: "Courier New", monospace;
+   
+    color: #00ff00;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #000040;
+    border: 2px solid #00ff00;
+    padding: 20px;
+    box-shadow: 5px 5px 0px #00ff00;
+}
+
+h1 {
+    text-align: center;
+    color: #00ff00;
+    text-shadow: 2px 2px #005500;
+    margin-bottom: 30px;
+}
+
+.input-area {
+    margin-bottom: 20px;
+    border: 1px solid #00ff00;
+    padding: 10px;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    background-color: #000040;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    padding: 10px;
+    font-family: "Courier New", monospace;
+    margin-bottom: 10px;
+    resize: none;
+}
+
+button {
+    background-color: #000040;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-family: "Courier New", monospace;
+    margin: 5px;
+    text-transform: uppercase;
+}
+
+button:hover {
+    background-color: #00ff00;
+    color: #000040;
+}
+
+.task-list {
+    border: 1px solid #00ff00;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-bottom: 1px dotted #00ff00;
+}
+
+.task-item:last-child {
+    border-bottom: none;
+}
+
+.checkbox {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #00ff00;
+    margin-right: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+.checkbox:checked::after {
+    content: "X";
+    color: #00ff00;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.status-bar {
+    margin-top: 20px;
+    border-top: 1px solid #00ff00;
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.blink {
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+@keyframes scanline {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(0, 255, 0, 0.1);
+    animation: scanline 4s linear infinite;
+}
+
+</style></head><body>
+    
+<div class="container">
+    <h1>SISTEMA DE TAREFAS v1.1</h1>
+    
+    <div class="input-area">
+        <div>NOVA TAREFA:</div>
+        <textarea id="taskInput" placeholder="Digite sua tarefa aqui... Para importar múltiplas tarefas, digite uma por linha."></textarea>
+        <button onclick="addTask()">ADICIONAR TAREFA</button>
+        <button onclick="exportTasks('json')">EXPORTAR JSON</button>
+        <button onclick="exportTasks('txt')">EXPORTAR TXT</button>
+        <button onclick="exportTasks('csv')">EXPORTAR CSV</button>
+        <button onclick="importTasks()">IMPORTAR</button>
+        <button onclick="clearTasks()">LIMPAR TUDO</button>
+        <a href='index.html'><button>HOME</button></a>
+    </div>
+
+    <div class="task-list" id="taskList">
+        <!-- Tasks will be added here -->
+    </div>
+
+    <div class="status-bar">
+        <span id="taskCount">Total: 0 tarefas</span>
+        <span class="blink">SISTEMA PRONTO_</span>
+    </div>
+</div>
+
+<script>
+let tasks = [];
+
+function addTask() {
+    const input = document.getElementById('taskInput');
+    const text = input.value.trim();
+    
+    if (text) {
+        const taskLines = text.split('\n');
+        
+        taskLines.forEach(line => {
+            if (line.trim()) {
+                tasks.push({
+                    text: line.trim(),
+                    completed: false,
+                    date: new Date().toLocaleString()
+                });
+            }
+        });
+        
+        input.value = '';
+        updateTaskList();
+        playBeep();
+    }
+}
+
+function exportTasks(format) {
+    let content = '';
+    let filename = 'tarefas_' + new Date().toISOString().split('T')[0];
+    let type = 'text/plain';
+
+    switch(format) {
+        case 'json':
+            content = JSON.stringify(tasks, null, 2);
+            filename += '.json';
+            type = 'application/json';
+            break;
+        case 'txt':
+            content = tasks.map(task => 
+                `[${task.completed ? 'X' : ' '}] ${task.date} - ${task.text}`
+            ).join('\n');
+            filename += '.txt';
+            break;
+        case 'csv':
+            content = 'Status,Data,Tarefa\n';
+            content += tasks.map(task =>
+                `${task.completed ? 'Concluída' : 'Pendente'},${task.date},"${task.text}"`
+            ).join('\n');
+            filename += '.csv';
+            type = 'text/csv';
+            break;
+    }
+
+    const blob = new Blob([content], { type: type });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    playBeep();
+}
+
+function importTasks() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json,.txt,.csv';
+    
+    input.onchange = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = function(event) {
+            try {
+                const content = event.target.result;
+                if (file.name.endsWith('.json')) {
+                    tasks = JSON.parse(content);
+                } else if (file.name.endsWith('.txt')) {
+                    tasks = content.split('\n').filter(line => line.trim()).map(line => ({
+                        text: line.trim(),
+                        completed: false,
+                        date: new Date().toLocaleString()
+                    }));
+                } else if (file.name.endsWith('.csv')) {
+                    const lines = content.split('\n').filter(line => line.trim());
+                    lines.shift();
+                    tasks = lines.map(line => {
+                        const [status, date, text] = line.split(',');
+                        return {
+                            text: text.replace(/^"|"$/g, ''),
+                            completed: status === 'Concluída',
+                            date: date
+                        };
+                    });
+                }
+                updateTaskList();
+                playBeep();
+            } catch (error) {
+                alert('Erro ao importar arquivo. Verifique o formato.');
+            }
+        };
+        
+        reader.readAsText(file);
+    };
+    
+    input.click();
+}
+
+function updateTaskList() {
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = '';
+    
+    tasks.forEach((task, index) => {
+        const taskElement = document.createElement('div');
+        taskElement.className = 'task-item';
+        
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'checkbox';
+        checkbox.checked = task.completed;
+        checkbox.onclick = () => toggleTask(index);
+        
+        const textSpan = document.createElement('span');
+        textSpan.textContent = `[${task.date}] ${task.text}`;
+        if (task.completed) {
+            textSpan.style.textDecoration = 'line-through';
+        }
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'X';
+        deleteBtn.style.marginLeft = 'auto';
+        deleteBtn.onclick = () => deleteTask(index);
+        
+        taskElement.appendChild(checkbox);
+        taskElement.appendChild(textSpan);
+        taskElement.appendChild(deleteBtn);
+        taskList.appendChild(taskElement);
+    });
+    
+    updateTaskCount();
+    saveTasks();
+}
+
+function toggleTask(index) {
+    tasks[index].completed = !tasks[index].completed;
+    updateTaskList();
+    playBeep();
+}
+
+function deleteTask(index) {
+    tasks.splice(index, 1);
+    updateTaskList();
+    playBeep();
+}
+
+function clearTasks() {
+    if (confirm('Tem certeza que deseja apagar todas as tarefas?')) {
+        tasks = [];
+        updateTaskList();
+        playBeep();
+    }
+}
+
+
+function updateTaskCount() {
+    const count = tasks.length;
+    const completed = tasks.filter(task => task.completed).length;
+    document.getElementById('taskCount').textContent = 
+        `Total: ${count} tarefas (${completed} concluídas)`;
+}
+
+function playBeep() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.type = 'square';
+    oscillator.frequency.value = 800;
+    gainNode.gain.value = 0.1;
+    
+    oscillator.start();
+    setTimeout(() => oscillator.stop(), 50);
+}
+
+function saveTasks() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function loadTasks() {
+    const savedTasks = localStorage.getItem('tasks');
+    if (savedTasks) {
+        tasks = JSON.parse(savedTasks);
+        updateTaskList();
+    }
+}
+
+// Inicialização
+document.addEventListener('DOMContentLoaded', loadTasks);
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && e.ctrlKey) {
+        addTask();
+    }
+});
+</script></body></html>

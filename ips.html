@@ -1,0 +1,429 @@
+<html lang="pt-BR">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+<title>Pesquisa</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tahoma', sans-serif;
+}
+
+body {
+    
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.window {
+    width: 800px;
+    background: #ECE9D8;
+    border: 3px solid #0058EE;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+}
+
+.title-bar {
+    height: 30px;
+    background: linear-gradient(180deg, #0058EE 0%, #2584FC 5%, #1557D0 100%);
+    padding: 0 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px 5px 0 0;
+}
+
+.title-bar-text {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.7);
+    padding-left: 5px;
+}
+
+.title-bar-controls {
+    display: flex;
+    gap: 2px;
+}
+
+.title-bar-button {
+    width: 21px;
+    height: 21px;
+    border: 1px solid white;
+    background: linear-gradient(180deg, #FFF 0%, #ECE9D8 100%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+}
+
+.title-bar-button:hover {
+    background: #FFE8A6;
+}
+
+.title-bar-button.close:hover {
+    background: #FF4444;
+}
+
+.search-bar {
+    padding: 10px;
+    background: #F0F0F0;
+    border-bottom: 1px solid #999;
+}
+
+.search-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.search-input {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #7A7A7A;
+    border-radius: 2px;
+    height: 25px;
+}
+
+.search-button {
+    padding: 4px 15px;
+    background: linear-gradient(180deg, #F6F6F6 0%, #E3E3E3 50%, #D7D7D7 100%);
+    border: 1px solid #7A7A7A;
+    border-radius: 3px;
+    cursor: pointer;
+    height: 25px;
+}
+
+.search-button:hover {
+    background: linear-gradient(180deg, #FFE8A6 0%, #FFD977 50%, #FFC73C 100%);
+}
+
+.content {
+    padding: 10px;
+    min-height: 300px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.result-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.result-table th {
+    background: linear-gradient(180deg, #E3E3E3 0%, #D7D7D7 100%);
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #999;
+    font-size: 12px;
+}
+
+.result-table td {
+    padding: 6px 8px;
+    border: 1px solid #DDD;
+    font-size: 12px;
+}
+
+.result-table tr:nth-child(even) {
+    background: #F5F5F5;
+}
+
+.result-table tr:hover {
+    background: #FFE8A6;
+}
+
+.status-bar {
+    height: 23px;
+    background: #ECE9D8;
+    border-top: 1px solid #999;
+    padding: 3px 8px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.status-icon {
+    width: 16px;
+    height: 16px;
+    background: #0058EE;
+    border-radius: 50%;
+}
+
+#loading {
+    display: none;
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: #666;
+}
+
+.link-cell {
+    color: #0066CC;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.link-cell:hover {
+    color: #CC0000;
+}
+
+.add-link-form {
+    margin-top: 10px;
+    padding: 10px;
+    background: #F0F0F0;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+}
+
+.add-link-form input {
+    margin-right: 10px;
+    padding: 3px;
+}
+
+.toolbar {
+    padding: 5px 10px;
+    background: #F0F0F0;
+    border-bottom: 1px solid #999;
+    display: flex;
+    gap: 5px;
+}
+
+.toolbar-button {
+    padding: 3px 10px;
+    background: linear-gradient(180deg, #F6F6F6 0%, #E3E3E3 50%, #D7D7D7 100%);
+    border: 1px solid #7A7A7A;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.toolbar-button:hover {
+    background: linear-gradient(180deg, #FFE8A6 0%, #FFD977 50%, #FFC73C 100%);
+}
+</style>
+</head>
+<body>
+    <div class="window">
+        <div class="title-bar">
+            <div class="title-bar-text">Pesquisa de Dados</div>
+            <div class="title-bar-controls">
+               
+                <a href="index.html">
+                    <button class="control-button close">×</button>
+                </a>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <button class="toolbar-button" id="addNewBtn">Adicionar Novo Link</button>
+            <button class="toolbar-button" id="refreshBtn">Atualizar</button>
+        </div>
+
+        <div class="search-bar">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Digite sua pesquisa...">
+                <button class="search-button" id="searchBtn">Pesquisar</button>
+            </div>
+        </div>
+
+        <div id="addLinkForm" class="add-link-form" style="display: none;">
+            <input type="text" id="titleInput" placeholder="Título">
+            <input type="text" id="urlInput" placeholder="URL">
+            <input type="text" id="descriptionInput" placeholder="Descrição">
+            <button class="search-button" id="saveLink">Salvar</button>
+        </div>
+
+        <div class="content">
+            <div id="loading">Carregando resultados...</div>
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>URL</th>
+                        <th>Descrição</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="resultBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-icon"></div>
+                <span id="resultCount">0 links encontrados</span>
+            </div>
+            <div class="status-item" id="statusMessage">Pronto</div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchBtn = document.getElementById('searchBtn');
+    const searchInput = document.querySelector('.search-input');
+    const resultBody = document.getElementById('resultBody');
+    const loading = document.getElementById('loading');
+    const resultCount = document.getElementById('resultCount');
+    const statusMessage = document.getElementById('statusMessage');
+    const addNewBtn = document.getElementById('addNewBtn');
+    const addLinkForm = document.getElementById('addLinkForm');
+    const saveLink = document.getElementById('saveLink');
+
+    // Dados de exemplo
+    let links = [
+        
+        { id: 1, title: '1 andar UETDI', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRXVOf8bUceW_xunlQnPlErnzMEdzrI6xn8BszwoPcClbmHu9fMavNijAlWKvZ1NmYWDFwwywp2AIVb/pubhtml?gid=103081339&single=true', description: 'Ips UETDI' },
+        { id: 2, title: '3A Andar', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSQmKu3Co7pG09PiwjHk4fnOJU16RrTonVP3K5u-p7ROF4UmSna2EaN3gGFUsc4xdOS35YD-5-hheiI/pubhtml?gid=1198690803&single=true', description: 'Ips 3A' },
+        { id: 3, title: '3B Andar', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSQmKu3Co7pG09PiwjHk4fnOJU16RrTonVP3K5u-p7ROF4UmSna2EaN3gGFUsc4xdOS35YD-5-hheiI/pubhtml?gid=1198690803&single=true', description: 'Ips 3B' },
+        { id: 4, title: '7 Andar', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9ABnkoBm_MTzWAOj8rsYrhZkcvGTr-jfdprD2p9-vwGkTVnF_y9BiKxtRco2xsMasMsVi23j1YMVk/pubhtml?gid=1643707154&single=true', description: 'Ips 7 andar' },
+        { id: 5, title: 'Balcãop 11', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRFuIllOFXQJsT-XFTrjfOGqiZzWe8ls8dPgYZC-o1RwYkq0ND99FGtTh7OlZI8aRfmGCldrqRFmjQ/pubhtml?gid=471602683&single=true', description: 'Balcão 11' },
+        { id: 6, title: 'Bloco G 2', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1938147960&single=true', description: 'Ips ' },
+        { id: 7, title: 'CAF', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=663214187&single=true', description: 'Ips ' },
+        { id: 8, title: 'CAF 1', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1415758203&single=true', description: 'Ips ' },
+        { id: 9, title: 'CAF 2', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=60798437&single=true', description: 'Ips ' },
+        { id: 10, title: 'CC', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1291530559&single=true', description: 'Ips ' },
+        { id: 11, title: 'CCI', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1557504080&single=true', description: 'Ips' },
+        { id: 12, title: 'Central de Quimio', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=992457678&single=true', description: 'Ips' },
+        { id: 13, title: 'CISA 1', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=524169008&single=true', description: 'Ips' },
+        { id: 14, title: 'CISA 2', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=459296921&single=true', description: 'Ips' },
+        { id: 15, title: 'Coleta + Pneu', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1935899144&single=true', description: 'Ips ' },
+        { id: 16, title: 'CPD', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=2070324478&single=true', description: 'Ips' },
+        { id: 17, title: 'Dialise', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=979072028&single=true', description: 'Ips' },
+        { id: 18, title: 'Endoscopia', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=491839745&single=true', description: 'Ips' },
+        { id: 19, title: 'SS', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1061374262&single=true', description: 'Ips ' },
+        { id: 20, title: 'Engenharia', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1178366834&single=true', description: 'Ips ' },
+        { id: 21, title: 'Estac 1', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1046818321&single=true', description: 'Ips ' },
+        { id: 22, title: 'Estac 2', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=145197607&single=true', description: 'Ips' },
+        { id: 23, title: 'Estac Privativo', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=148561388&single=true', description:'Ips' },
+        { id: 24, title: 'Farmacia', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1024158185&single=true', description: 'Ips ' },
+        { id: 25, title: 'Gecon', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1417871827&single=true', description: 'Ips' },
+        { id: 26, title: 'Sala Kleber', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=2093206551&single=true', description: 'Ips' },
+        { id: 27, title: 'Nutri 1', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=584637403&single=true', description: 'Ips' },
+        { id: 28, title: 'Nutri 2', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=18399859&single=true', description: 'Ips' },
+        { id: 29, title: 'Oftalmo', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1730641452&single=true', description: 'Ips' },
+        { id: 30, title: 'Pav Mec', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1073343342&single=true', description: 'Ips' },
+        { id: 31, title: 'PP', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=982087501&single=true', description: 'Ips ' },
+        { id: 32, title: 'Residuo', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9ABnkoBm_MTzWAOj8rsYrhZkcvGTr-jfdprD2p9-vwGkTVnF_y9BiKxtRco2xsMasMsVi23j1YMVk/pubhtml?gid=0&single=true', description: 'Ips ' },
+        { id: 33, title: 'Samsp+Crie', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8mlbT1Nl98ldDreZS0uUgS9R9eIDEFX0Z88q-GTXatRmrZb7qbBy9XkLxaUw0rOUx0Hf0n6VLC4Io/pubhtml?gid=520758441&single=true', description: 'Ips' },
+        { id: 34, title: 'SAO', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8mlbT1Nl98ldDreZS0uUgS9R9eIDEFX0Z88q-GTXatRmrZb7qbBy9XkLxaUw0rOUx0Hf0n6VLC4Io/pubhtml?gid=1401774260&single=true', description: 'Ips ' },
+        { id: 35, title: 'Transporte', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1332503741&single=true', description: 'Ips' },
+        { id: 36, title: 'UCO', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=191586304&single=true', description: 'Ips ' },
+        { id: 37, title: 'UETDI + PRIV', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=507491996&single=true', description: 'Ips' },
+        { id: 38, title: 'UTR+CEAPS+TMO', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfan6o9YJ_ZiO7xYcP__nG85wkSCfaG72X_Yu5nBILgV8aSCNYP2VEn9ZnZj9fozcncIDAFCNmD8Vf/pubhtml?gid=1834978175&single=true', description: 'Ips' },
+        { id: 39, title: 'G4', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSyfDQnHbgeETUHcZWkltYD89QDqj5cs2cBI1DwPM5a-VXbwvFfF6WhV-GGMtQw7QGvp16uv3iGh4v0/pubhtml?gid=501141100&single=true', description: 'Ips ' },
+        { id: 40, title: 'HCC 1', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQT0pdqysrBTYj-S3W4XEYApAHqn4bUTqACosiHX2v5ExrjOwid98kd6B3vYM03Xin_DJKJHHlRq8to/pubhtml?gid=608953467&single=true', description: 'Ips' },
+        { id: 41, title: 'HCC 2', url: '', description: 'Ips' },
+        { id: 42, title: 'HCC 3', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ9T9kzTuh-dzZgqnERMIMjBBAK1-qtsjkqtioVm_jVqomaaojYl1xhDbf97o6At382yqhzLko_8ndE/pubhtml?gid=581182847&single=true', description: 'Ips' },
+        { id: 43, title: 'HCC 4', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSzodudf6hCgLwAFskYqmiSJ7Tkr4Zq3hyRJNjFG1uoO7zE-p_vrkU0nE-BLPrAsalP_7ArddrQMW6D/pubhtml?gid=699952881&single=true', description: 'Ips' },
+        { id: 44, title: 'HCC Copas', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTvy-zW3F0wU6rYdzcTnPji-2c0xKh9jWZS5A6iZwaBmPyMl5r8HpvGgPffZ4-eMa4DjqWK8ulMgSiA/pubhtml?gid=1876677099&single=true', description: 'Ips' },
+        { id: 45, title: 'Ambulatório', url: '', description: 'Ips' },
+        
+    ];
+
+    function performSearch() {
+        const searchTerm = searchInput.value.toLowerCase();
+        loading.style.display = 'block';
+        resultBody.innerHTML = '';
+        statusMessage.textContent = 'Pesquisando...';
+
+        setTimeout(() => {
+            const filteredLinks = links.filter(item => 
+                item.title.toLowerCase().includes(searchTerm) ||
+                item.url.toLowerCase().includes(searchTerm) ||
+                item.description.toLowerCase().includes(searchTerm)
+            );
+
+            filteredLinks.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.id}</td>
+                    <td class="link-cell" onclick="window.open('${item.url}', '_blank')">${item.title}</td>
+                    <td>${item.url}</td>
+                    <td>${item.description}</td>
+                    <td>
+                        <button class="toolbar-button" onclick="deleteLink(${item.id})">Excluir</button>
+                    </td>
+                `;
+                resultBody.appendChild(row);
+            });
+
+            loading.style.display = 'none';
+            resultCount.textContent = `${filteredLinks.length} links encontrados`;
+            statusMessage.textContent = 'Pronto';
+        }, 500);
+    }
+
+    function addLink() {
+        const title = document.getElementById('titleInput').value;
+        const url = document.getElementById('urlInput').value;
+        const description = document.getElementById('descriptionInput').value;
+
+        if (title && url) {
+            const newLink = {
+                id: links.length + 1,
+                title,
+                url,
+                description
+            };
+            links.push(newLink);
+            addLinkForm.style.display = 'none';
+            clearForm();
+            performSearch();
+        }
+    }
+
+    function clearForm() {
+        document.getElementById('titleInput').value = '';
+        document.getElementById('urlInput').value = '';
+        document.getElementById('descriptionInput').value = '';
+    }
+
+    window.deleteLink = function(id) {
+        links = links.filter(link => link.id !== id);
+        performSearch();
+    }
+
+    searchBtn.addEventListener('click', performSearch);
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            performSearch();
+        }
+    });
+
+    addNewBtn.addEventListener('click', () => {
+        addLinkForm.style.display = addLinkForm.style.display === 'none' ? 'block' : 'none';
+    });
+
+    saveLink.addEventListener('click', addLink);
+
+    document.getElementById('refreshBtn').addEventListener('click', performSearch);
+
+    // Carregar dados iniciais
+    performSearch();
+
+    // Funcionalidade dos botões da janela
+    document.querySelectorAll('.title-bar-button').forEach(button => {
+        button.addEventListener('click', function() {
+            if (this.classList.contains('close')) {
+                alert('Função de fechar janela');
+            }
+        });
+    });
+});
+</script>
+</body>
+</html>

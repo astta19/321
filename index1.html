@@ -1,0 +1,119 @@
+<html lang="pt-BR">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Menu</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: rgb(4,100,172);
+background: linear-gradient(90deg, rgba(4,100,172,1) 0%, rgba(4,100,180,1) 43%, rgba(44,160,124,1) 97%);
+}
+
+.menu {
+    background-color: white;
+    
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 300px;
+}
+
+.menu-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+.menu-list {
+    list-style: none;
+}
+
+.menu-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-item:hover {
+    background-color: #f5f5f5;
+}
+
+.menu-item.active {
+    background-color: #e6e6e6;
+}
+select {
+      padding: 10px;
+      font-size: 16px;
+      border: 5px solid #ccc;
+      border-radius: 10px;
+    }
+
+    option {
+      font-size: 14px;
+      font-family: monospace;
+      padding: 5px;
+      margin: 2px;
+      border: 5px solid #ddd;
+      border-radius: px;
+
+    }
+
+</style>
+
+<body>
+    
+    <div class="versao" type="versao"></div>
+      
+    
+        <select onchange="location.href=this.value">
+            
+          
+            <option value="" selected>Escolha o destino</option>
+             <option value="cameras.html">Câmeras Atualizadas</option>
+              <option value="dvrs1.html">DRVs Atualizados</option>
+               <option value="graficos1.html">Gráficos</option>
+                <option value="sw.html">Switchs</option>
+                 <option value="ips.html">IPS</option>
+                 <option value="tarefas.html">Gerenciamento de Tarefas</option>
+          
+           </select>
+    </div>
+
+<script>
+const menuItems = document.querySelectorAll('.menu-item');
+
+menuItems.forEach(item => {
+    item.addEventListener('click', function() {
+        // Remove active class from all items
+        menuItems.forEach(i => i.classList.remove('active'));
+        
+        // Add active class to clicked item
+        this.classList.add('active');
+        
+        // Log the selected option
+        console.log('Selecionado:', this.textContent);
+    });
+});
+</script>
+
+</body>
+</html>
